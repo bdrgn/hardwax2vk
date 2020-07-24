@@ -1,4 +1,4 @@
-# RecordPoster
+# hardwax2vk
 
 ![](demo_images/pipeline.png)
 
