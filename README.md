@@ -1,5 +1,3 @@
-# hardwax2vk
-
 ![](demo_images/pipeline.png)
 
 ## AWS Lambda function which runs this [community](https://vk.com/hard_wax). 
