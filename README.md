@@ -5,5 +5,5 @@
 ![](demo_images/demo_1.jpg)
 ### 2) Looks up *.mp3s in [VK](https://vk.com/) and posts a music album with full tracks.
 ![](demo_images/demo_2.jpg)
-### 3) View the actual code [here](function.py). (other files are modules so it will work in AWS Lambda)
+### 3) View the actual code [here](function.py). (dependencies are in [AWS Lambda Layer](Hardwax2VKLayer.zip))
 ![](demo_images/demo_3.jpg)
