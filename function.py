@@ -18,13 +18,14 @@ vk_login = os.environ['vk_login']
 vk_password = os.environ['vk_password']
 user_id = os.environ['user_id']
 group_id = os.environ['group_id']
+app_id = os.environ['app_id']
 
 # Connect to DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 table = dynamodb.Table('HardwaxLinks')
 
 # Connect to VK
-vk_session = vk_api.VkApi(vk_login, vk_password)
+vk_session = vk_api.VkApi(vk_login, vk_password, app_id=app_id)
 vk_session.auth()
 vk = vk_session.get_api()
 vkaudio = VkAudio(vk_session)
