@@ -24,7 +24,7 @@ app_id = os.environ['app_id']
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 table = dynamodb.Table('HardwaxLinks')
 
-# Connect to VK
+# Connect to VK.com
 vk_session = vk_api.VkApi(vk_login, vk_password, app_id=app_id)
 vk_session.auth()
 vk = vk_session.get_api()
@@ -36,7 +36,6 @@ def get_link_status(record_link):
     """
     Get the status of link: whether if was posted or tried.
     (to not post the link twice and not even attempt to post when tracks are missing in VK)
-
     :param record_link: the link (str) to release at hardwax.com.
     :return: the status (str) for the link. (whether if was posted or tried)
     """
@@ -55,7 +54,6 @@ def get_link_status(record_link):
 def get_records_page(page_url):
     """
     Parse a single page of hardwax.com catalogue.
-
     :param page_url: the link (str) to catalogue page at hardwax.com.
     :return: the dataframe with links to releases as well as artists, titles, labels and so on.
     """
@@ -119,7 +117,6 @@ def get_records_page(page_url):
 def get_record_tracks_hardwax(record_link):
     """
     Get the *.mp3 track titles from link to the release page.
-
     :param record_link: the link (str) to release page at hardwax.com.
     :return: a set of titles of *.mp3 tracks.
     """
@@ -147,7 +144,6 @@ def get_record_tracks_hardwax(record_link):
 def get_record_images_hardwax(record_link):
     """
     Get links to cover images from hardwax.com release URL.
-
     :param record_link: the link (str) to release page at hardwax.com.
     :return: a set of URLs to cover images.
     """
@@ -170,7 +166,6 @@ def get_record_images_hardwax(record_link):
 def get_audio_id(record_track):
     """
     Get track owner id and track id for an *.mp3 in VK.
-
     :param record_track: *.mp3 track title (str).
     :return: tuple of track id from VK and track owner id from VK.s
     """
@@ -223,7 +218,6 @@ def get_audio_id(record_track):
 def upload_photos(record_covers_links):
     """
     Upload photos to VK.
-
     :param record_covers_links: URLs of images from hardwax.com.
     :return: VK images ids of uploaded images.
     """
@@ -262,7 +256,6 @@ def upload_photos(record_covers_links):
 def get_title_label_link_hardwax(record_link):
     """
     Get title, label and link for hardwax.com release.
-
     :param record_link: the link (str) to release page at hardwax.com.
     :return: title and label of release at hardwax.com.
     """
@@ -290,7 +283,6 @@ def get_title_label_link_hardwax(record_link):
 def post_record(record_link):
     """
     Post hardwax.com release to VK community with *.mp3 tracks, cover image and text metadata for title, label and link.
-
     :param record_link: the link (str) to release page at hardwax.com.
     :return: whether the release was posted to VK or not. (str)
     """
@@ -386,7 +378,6 @@ Release link: {record_link}
 def update_pinned_post():
     """
     Pin the most popular post from last week.
-
     :return: None.
     """
 
@@ -415,7 +406,6 @@ def update_pinned_post():
 def lambda_handler(event, context):
     """
     Post another hardwax.com release to VK community.
-
     :param event: random values (not used).
     :param context: random values (not used).
     :return: whether something was posted or not.
@@ -431,7 +421,7 @@ def lambda_handler(event, context):
     main_pages = ['https://hardwax.com/?page={}'] # hardwax.com main page
 
     # Search in yearly charts with 50% probability (to avoid digging deep in the past)
-    if np.random.random() >= 0.5:
+    if np.random.random() >= 2:
         main_pages = main_pages +\
         ['https://hardwax.com/charts-' + str(x) + '/?page={}'
                          for x in range(datetime.datetime.now().year - 1, 2006, -1)]
