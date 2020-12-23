@@ -470,34 +470,35 @@ def lambda_handler(event, context):
 
     # Get the final queue of sections
     sections = main_pages + important_sections + other_sections
+    
+    # Define a generator for sections as well as excluded sections list
+    excluded_sections = []
+    def sections_generator(sections):
+        for page in range(1, 1001):
+            for section in sections:
+                if section.split('?')[0] not in excluded_sections:
+                    yield section.format(page)
+    sections_generator_object = sections_generator(sections)
 
     # Iterate over sections queue and attempt to post every release which was not previously posted or attempted
-    for section in sections:
+    for section in sections_generator_object:
 
-        # Try to post every record staring from page 1
-        page = 1
-        keep_going = True
-        while keep_going:
+        # Get a data frame of releases from section URL
+        df = get_records_page(section)
 
-            # Get a data frame of releases from section URL
-            df = get_records_page(section.format(page))
+        # Stop looking in a section if there are no more releases
+        if df.shape[0] == 0:
+            excluded_sections.append(section.split('?')[0])
 
-            # Stop looking in a section if there are no more releases
-            if df.shape[0] == 0:
-                keep_going = False
+        # Iterate over record links and attempt posting
+        for record_link in df['record_link']:
 
-            # Iterate over record links and attempt posting
-            for record_link in df['record_link']:
+            result = post_record(record_link)
 
-                result = post_record(record_link)
+            # If succeed - stop
+            if result == 'Posted':
+                return 'Posted'
 
-                # If succeed - stop
-                if result == 'Posted':
-                    return 'Posted'
-
-                # If VK glitches (rarely), stop bothering the API
-                if result == 'VK Glitch':
-                    return 'Stop posting'
-
-            # Look at the next page
-            page += 1
+            # If VK glitches (rarely), stop bothering the API
+            if result == 'VK Glitch':
+                return 'Stop posting'
