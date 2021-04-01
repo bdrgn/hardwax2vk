@@ -70,16 +70,20 @@ def get_records_page(page_url):
 
     # Define function to get artist and title from record info
     def f(x):
-        children = list(x.children)
+        try:
+            children = list(x.children)
 
-        record_title = children[1]
+            record_title = children[1]
 
-        record_artist = list(children[0].children)[0].string
+            record_artist = list(children[0].children)[0].string
 
-        return record_artist, record_title
+            return record_artist, record_title
+        except:
+            return ()
 
     # Process all the records data
-    record_names = list(map(f, records_info))
+    record_names = [x for x in map(f, records_info) if len(x) > 0]
+    
     record_data = []
     for x in [(x.get('href'), x.get('href')[1:6]) for x in soup.findAll('a') if x.get('href')[1:6].isdigit()]:
         if x not in record_data:
@@ -410,15 +414,34 @@ def lambda_handler(event, context):
     :param context: random values (not used).
     :return: whether something was posted or not.
     """
-
+    
     # Work in the AWS Lambda's tmp directory
     os.chdir('/tmp')
+    
+    # if 'https' in event['message']['text']:
+    #     try:
+    #         reply = event['message']['text']
+    #         send_message(reply, chat_id)
+    
+    #         posting_result = post_record(reply)
+    
+    #         send_message(posting_result, chat_id)
+    
+    #         return posting_result
+    #     except:
+    #         return None
 
     # Update the pinned post in VK community
     update_pinned_post()
 
     # Add section URLS to search for releases in
-    main_pages = ['https://hardwax.com/?page={}'] # hardwax.com main page
+    main_pages = \
+            [
+                'https://hardwax.com/?page={}', 
+                'https://hardwax.com/this-week/?page={}', 
+                'https://hardwax.com/last-week/?page={}', 
+                'https://hardwax.com/downloads/?page={}'
+            ] # hardwax.com main pages
 
     # Search in yearly charts with 50% probability (to avoid digging deep in the past)
     if np.random.random() >= 2:
@@ -469,11 +492,16 @@ def lambda_handler(event, context):
     np.random.shuffle(other_sections)
 
     # Get the final queue of sections
-    sections = main_pages + important_sections + other_sections
+    sections = important_sections + other_sections
     
     # Define a generator for sections as well as excluded sections list
     excluded_sections = []
     def sections_generator(sections):
+        for page in range(1, 1001):
+            for section in main_pages:
+                if section.split('?')[0] not in excluded_sections:
+                    yield section.format(page)
+                    
         for page in range(1, 1001):
             for section in sections:
                 if section.split('?')[0] not in excluded_sections:
