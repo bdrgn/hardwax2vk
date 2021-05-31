@@ -23,6 +23,7 @@ app_id = os.environ['app_id']
 # Connect to DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 table = dynamodb.Table('HardwaxLinks')
+print('Connected to DynamoDB...')
 
 # Connect to VK.com
 vk_session = vk_api.VkApi(vk_login, vk_password, app_id=app_id)
