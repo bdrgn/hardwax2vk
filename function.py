@@ -408,10 +408,6 @@ def update_pinned_post():
     vk.wall.pin(owner_id='-183970488', post_id=str(top_post))
 
 def lambda_handler(event, context):
-    print('Event:')
-    print(event)
-    print('Context:')
-    print(context)
     """
     Post another hardwax.com release to VK community.
     :param event: random values (not used).
