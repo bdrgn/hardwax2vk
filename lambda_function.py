@@ -417,19 +417,6 @@ def lambda_handler(event, context):
     
     # Work in the AWS Lambda's tmp directory
     os.chdir('/tmp')
-    
-    # if 'https' in event['message']['text']:
-    #     try:
-    #         reply = event['message']['text']
-    #         send_message(reply, chat_id)
-    
-    #         posting_result = post_record(reply)
-    
-    #         send_message(posting_result, chat_id)
-    
-    #         return posting_result
-    #     except:
-    #         return None
 
     # Update the pinned post in VK community
     update_pinned_post()
@@ -439,13 +426,13 @@ def lambda_handler(event, context):
             [
                 'https://hardwax.com/?page={}', 
                 'https://hardwax.com/this-week/?page={}', 
-                'https://hardwax.com/last-week/?page={}'
+                'https://hardwax.com/last-week/?page={}',
+                'https://hardwax.com/downloads/?page={}'
             ]
 
     # Continue with other sections
     sections = \
         [
-            'https://hardwax.com/downloads/?page={}',
             'https://hardwax.com/techno/?page={}',
             'https://hardwax.com/basic-channel/?page={}',
             'https://hardwax.com/chicago-oldschool/?page={}',
