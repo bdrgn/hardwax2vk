@@ -439,60 +439,48 @@ def lambda_handler(event, context):
             [
                 'https://hardwax.com/?page={}', 
                 'https://hardwax.com/this-week/?page={}', 
-                'https://hardwax.com/last-week/?page={}', 
-                'https://hardwax.com/downloads/?page={}'
-            ] # hardwax.com main pages
+                'https://hardwax.com/last-week/?page={}'
+            ]
 
-    # Search in yearly charts with 50% probability (to avoid digging deep in the past)
-    if np.random.random() >= 2:
-        main_pages = main_pages +\
-        ['https://hardwax.com/charts-' + str(x) + '/?page={}'
-                         for x in range(datetime.datetime.now().year - 1, 2006, -1)]
-
-    # Continue with most popular and important sections
-    important_sections = [
-        'https://hardwax.com/techno/?page={}',
-        'https://hardwax.com/basic-channel/?page={}',
-        'https://hardwax.com/chicago-oldschool/?page={}',
-        'https://hardwax.com/digital/?page={}',
-        'https://hardwax.com/detroit-house/?page={}',
-        'https://hardwax.com/drum-n-bass/?page={}',
-        'https://hardwax.com/grime/?page={}',
-        'https://hardwax.com/house/?page={}',
-        'https://hardwax.com/disco/?page={}',
-        'https://hardwax.com/essentials/?page={}',
-        'https://hardwax.com/exclusives/?page={}',
-        'https://hardwax.com/honest-jons/?page={}',
-        'https://hardwax.com/new-wave/?page={}',
-        'https://hardwax.com/outernational/?page={}',
-        'https://hardwax.com/section/reggae/?page={}']
-    np.random.shuffle(important_sections)
-
-    # If everything from previous sections was posted revert to less popular (and more weird)
-    other_sections = [
-        'https://hardwax.com/surgeon/?page={}',
-        'https://hardwax.com/collectors-items/?page={}',
-        'https://hardwax.com/colundi-everyone/?page={}',
-        'https://hardwax.com/drexciya/?page={}',
-        'https://hardwax.com/early-electronic/?page={}',
-        'https://hardwax.com/electro/?page={}',
-        'https://hardwax.com/electronic/?page={}',
-        'https://hardwax.com/irdial-discs/?page={}',
-        'https://hardwax.com/mego/?page={}',
-        'https://hardwax.com/reissues/?page={}',
-        'https://hardwax.com/section/d/?page={}',
-        'https://hardwax.com/section/euro/?page={}',
-        'https://hardwax.com/section/uk/?page={}',
-        'https://hardwax.com/section/us/?page={}',
-        'https://hardwax.com/this-week/?page={}',
-        'https://hardwax.com/last-week/?page={}',
-        'https://hardwax.com/back-in-stock/?page={}',
-        'https://hardwax.com/downloads/?page={}'
-    ]
-    np.random.shuffle(other_sections)
-
-    # Get the final queue of sections
-    sections = important_sections + other_sections
+    # Continue with other sections
+    sections = \
+        [
+            'https://hardwax.com/downloads/?page={}',
+            'https://hardwax.com/techno/?page={}',
+            'https://hardwax.com/basic-channel/?page={}',
+            'https://hardwax.com/chicago-oldschool/?page={}',
+            'https://hardwax.com/digital/?page={}',
+            'https://hardwax.com/detroit-house/?page={}',
+            'https://hardwax.com/drum-n-bass/?page={}',
+            'https://hardwax.com/grime/?page={}',
+            'https://hardwax.com/house/?page={}',
+            'https://hardwax.com/disco/?page={}',
+            'https://hardwax.com/essentials/?page={}',
+            'https://hardwax.com/exclusives/?page={}',
+            'https://hardwax.com/honest-jons/?page={}',
+            'https://hardwax.com/new-wave/?page={}',
+            'https://hardwax.com/outernational/?page={}',
+            'https://hardwax.com/section/reggae/?page={}',
+            'https://hardwax.com/surgeon/?page={}',
+            'https://hardwax.com/collectors-items/?page={}',
+            'https://hardwax.com/colundi-everyone/?page={}',
+            'https://hardwax.com/drexciya/?page={}',
+            'https://hardwax.com/early-electronic/?page={}',
+            'https://hardwax.com/electro/?page={}',
+            'https://hardwax.com/electronic/?page={}',
+            'https://hardwax.com/irdial-discs/?page={}',
+            'https://hardwax.com/mego/?page={}',
+            'https://hardwax.com/reissues/?page={}',
+            'https://hardwax.com/section/d/?page={}',
+            'https://hardwax.com/section/euro/?page={}',
+            'https://hardwax.com/section/uk/?page={}',
+            'https://hardwax.com/section/us/?page={}',
+            'https://hardwax.com/this-week/?page={}',
+            'https://hardwax.com/last-week/?page={}',
+            'https://hardwax.com/back-in-stock/?page={}',
+            'https://hardwax.com/downloads/?page={}'
+        ]
+    np.random.shuffle(sections)
     
     # Define a generator for sections as well as excluded sections list
     excluded_sections = []
