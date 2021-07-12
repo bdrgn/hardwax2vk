@@ -426,13 +426,13 @@ def lambda_handler(event, context):
             [
                 'https://hardwax.com/?page={}', 
                 'https://hardwax.com/this-week/?page={}', 
-                'https://hardwax.com/last-week/?page={}'
+                'https://hardwax.com/last-week/?page={}',
+                'https://hardwax.com/downloads/?page={}'
             ]
 
     # Continue with other sections
     sections = \
         [
-            'https://hardwax.com/downloads/?page={}',
             'https://hardwax.com/techno/?page={}',
             'https://hardwax.com/basic-channel/?page={}',
             'https://hardwax.com/chicago-oldschool/?page={}',
