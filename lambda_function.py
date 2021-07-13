@@ -32,7 +32,7 @@ vkaudio = VkAudio(vk_session)
 tools = vk_api.VkTools(vk_session)
 
 def get_link_status(record_link):
-
+    
     """
     Get the status of link: whether if was posted or tried.
     (to not post the link twice and not even attempt to post when tracks are missing in VK)
@@ -48,6 +48,8 @@ def get_link_status(record_link):
         Result = 'Not Tried'
     else:
         Result = response['Items'][-1]['Result']
+        
+    print(f'Querying DynamoDB for {record_link}: {Result}')
 
     return Result
 
@@ -374,7 +376,9 @@ Release link: {record_link}
     vk.wall.post(owner_id='-183970488', from_community=1, message=record_message, attachments=attachment_string)
 
     # Write status to DynamoDB
-    table.put_item(Item={'Result': 'Posted', 'Link': record_link})
+    db_new_item = {'Result': 'Posted', 'Link': record_link}
+    print('Writing new item to DynamoDB:\n', db_new_item)
+    table.put_item(Item=db_new_item)
 
     print(f'Posted: {record_name}')
     return 'Posted'
