@@ -1,4 +1,3 @@
-# Import libraries
 import os
 import requests
 import boto3
